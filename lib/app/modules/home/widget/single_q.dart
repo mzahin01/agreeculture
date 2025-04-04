@@ -1,28 +1,188 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../controllers/home_controller.dart';
 
 class SingleQuestionWidget extends StatelessWidget {
-  const SingleQuestionWidget({super.key, required this.controller});
+  const SingleQuestionWidget({
+    super.key,
+    required this.controller,
+    required this.index,
+  });
 
   final HomeController controller;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: min(double.maxFinite, 600),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.black),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey[300]!),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(20),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+            color: Colors.grey.withAlpha(50),
+            blurRadius: 6,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Question(ques: controller.reformProposals[0]),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Question(ques: controller.questions[index].text),
+          const SizedBox(height: 20),
+          Options(controller: controller, index: index),
+          const SizedBox(height: 20),
+          Indicator(),
+        ],
+      ),
+    );
+  }
+}
+
+class Indicator extends StatelessWidget {
+  const Indicator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(Icons.arrow_back, color: Colors.red, size: 25),
+          Column(
+            children: [
+              Text(
+                'সহমত',
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Container(
+                width: 30,
+                height: 3,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(1.5),
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              Text(
+                'মেহ !',
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Container(
+                width: 25,
+                height: 3,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(1.5),
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              Text(
+                'সহমত না',
+                style: const TextStyle(
+                  color: Colors.green,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Container(
+                width: 45,
+                height: 3,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(1.5),
+                ),
+              ),
+            ],
+          ),
+          Icon(Icons.arrow_forward, color: Colors.green, size: 25),
+        ],
+      ),
+    );
+  }
+}
+
+class Options extends StatelessWidget {
+  const Options({super.key, required this.controller, required this.index});
+
+  final HomeController controller;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        for (int i = 0; i < 5; i++)
+          Container(
+            width:
+                (i == 0 || i == 4)
+                    ? 58.0
+                    : (i == 1 || i == 3)
+                    ? 50.0
+                    : 45.0,
+            height:
+                (i == 0 || i == 4)
+                    ? 58.0
+                    : (i == 1 || i == 3)
+                    ? 50.0
+                    : 45.0,
+            decoration: BoxDecoration(
+              color:
+                  [
+                    Colors.red,
+                    Colors.orange,
+                    Colors.grey,
+                    Colors.lightGreen,
+                    Colors.green,
+                  ][i],
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: MaterialButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100),
+              ),
+              onPressed: () {
+                controller.vote(index, i);
+              },
+              child: Center(
+                child: Text(
+                  '${i + 1}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
@@ -41,8 +201,8 @@ class Question extends StatelessWidget {
         textSpans.add(
           TextSpan(
             text: quesList[i],
-            style: TextStyle(
-              color: Colors.black,
+            style: const TextStyle(
+              color: Colors.black87,
               fontSize: 16,
               fontWeight: FontWeight.normal,
             ),
@@ -52,8 +212,8 @@ class Question extends StatelessWidget {
         textSpans.add(
           TextSpan(
             text: quesList[i],
-            style: TextStyle(
-              color: Colors.red,
+            style: const TextStyle(
+              color: Colors.blueAccent,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -64,6 +224,7 @@ class Question extends StatelessWidget {
 
     return RichText(
       text: TextSpan(children: textSpans),
+      textAlign: TextAlign.center,
       softWrap: true,
       overflow: TextOverflow.visible,
       maxLines: null,
