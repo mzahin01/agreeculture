@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 
-import '../../home/controllers/home_controller.dart';
-
 class ResultShowController extends GetxController {
   RxBool isLoading = false.obs;
-  RxList<QuestionDetails>? questions = <QuestionDetails>[].obs;
+  RxString questions = ''.obs;
+  String ncpResult = '44443444444';
+  String bnpResult = '10000000001';
   @override
   void onInit() {
-    questions = Get.arguments['questions'] ?? <QuestionDetails>[].obs;
+    questions.value = Get.parameters['q'] ?? '';
     super.onInit();
   }
 }

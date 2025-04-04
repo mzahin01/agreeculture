@@ -55,11 +55,23 @@ class HomeController extends GetxController {
           "ত্রুটি",
           "অনুগ্রহ করে সকল প্রশ্নের জন্য একটি উত্তর নির্বাচন করুন",
           colorText: Colors.white,
-          backgroundColor: Colors.red.withOpacity(0.5),
+          backgroundColor: Colors.red.withOpacity(0.7),
         );
         return false;
       }
     }
     return true;
+  }
+
+  String getVoteResult() {
+    String result = '';
+    for (int i = 0; i < questions!.length; i++) {
+      if (questions![i].answers == -1) {
+        result += '0';
+      } else {
+        result += questions![i].answers.toString();
+      }
+    }
+    return result;
   }
 }

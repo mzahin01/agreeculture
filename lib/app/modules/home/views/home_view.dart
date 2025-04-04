@@ -61,7 +61,7 @@ class HomeView extends GetView<HomeController> {
                   if (controller.checkAllVotes()) {
                     Get.toNamed(
                       Routes.RESULT_SHOW,
-                      arguments: {'questions': controller.questions},
+                      parameters: {'q': controller.getVoteResult()},
                     );
                   }
                 },
@@ -72,15 +72,5 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
     );
-  }
-
-  // Tablet layout
-  Widget buildTabletView() {
-    return Center(child: const Text('Tablet View'));
-  }
-
-  // Desktop layout
-  Widget buildDesktopView() {
-    return Center(child: const Text('Desktop View'));
   }
 }
