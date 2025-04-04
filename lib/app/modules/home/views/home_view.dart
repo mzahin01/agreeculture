@@ -1,3 +1,4 @@
+import 'package:agreeculture/app/modules/home/widget/title.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../shared/widget/animated/crossfade_wrapper_container.dart';
@@ -19,8 +20,8 @@ class HomeView extends GetView<HomeController> {
             loaderHeight: Get.height,
             //Pass respective controller to the widget
             child: ResponsiveWidget<HomeController>(
-              pc: buildDesktopView(),
-              tab: buildTabletView(),
+              pc: buildMobileView(),
+              tab: buildMobileView(),
               mobile: buildMobileView(),
             ),
           ),
@@ -35,10 +36,8 @@ class HomeView extends GetView<HomeController> {
       child: Column(
         children: [
           const SizedBox(height: 20),
-          const Text('Mobile View'),
-          const SizedBox(height: 20),
-          const Text('Reform Proposals'),
-          const SizedBox(height: 20),
+          TopTitleWidget(),
+          DetailsWidget(),
           for (int i = 0; i < (controller.questions?.length ?? 0); i++)
             Column(
               children: [

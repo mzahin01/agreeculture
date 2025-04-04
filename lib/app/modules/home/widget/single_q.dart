@@ -206,7 +206,7 @@ class Options extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            ['সেরা', 'অকে', 'মেহ!', 'বাজে', 'জঘন্য'][i],
+                            ['সেরা', 'অকে', 'মেহ!', 'পচা', 'জঘন্য'][i],
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 12,
@@ -231,9 +231,28 @@ class Options extends StatelessWidget {
                                 ? 50.0
                                 : 45.0,
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color:
+                              [
+                                Colors.red,
+                                Colors.orange,
+                                Colors.grey,
+                                Colors.lightGreen,
+                                Colors.green,
+                              ][i],
                           borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: Colors.red, width: 2),
+                          border: Border.all(color: Colors.black, width: 2),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.check,
+                            color: Colors.white,
+                            size:
+                                (i == 0 || i == 4)
+                                    ? 40.0
+                                    : (i == 1 || i == 3)
+                                    ? 35.0
+                                    : 30.0,
+                          ),
                         ),
                       ),
                     if (controller.toUpdate.value || !controller.toUpdate.value)
@@ -263,7 +282,7 @@ class Question extends StatelessWidget {
           TextSpan(
             text: quesList[i],
             style: const TextStyle(
-              color: Colors.black87,
+              color: Colors.black,
               fontSize: 16,
               fontWeight: FontWeight.normal,
             ),
@@ -289,6 +308,36 @@ class Question extends StatelessWidget {
       softWrap: true,
       overflow: TextOverflow.visible,
       maxLines: null,
+    );
+  }
+}
+
+class TitleWidget extends StatelessWidget {
+  const TitleWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RichText(
+        text: TextSpan(
+          text: 'সহমত ভাই',
+          style: const TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: '  by DespicableApp',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
