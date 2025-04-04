@@ -60,7 +60,7 @@ class Indicator extends StatelessWidget {
           Column(
             children: [
               Text(
-                'সহমত',
+                'সহমত না',
                 style: const TextStyle(
                   color: Colors.red,
                   fontSize: 12,
@@ -69,7 +69,7 @@ class Indicator extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Container(
-                width: 30,
+                width: 35,
                 height: 3,
                 decoration: BoxDecoration(
                   color: Colors.red,
@@ -102,7 +102,7 @@ class Indicator extends StatelessWidget {
           Column(
             children: [
               Text(
-                'সহমত না',
+                'সহমত ভাই',
                 style: const TextStyle(
                   color: Colors.green,
                   fontSize: 12,
@@ -206,7 +206,7 @@ class Options extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            ['সেরা', 'অকে', 'মেহ!', 'পচা', 'জঘন্য'][i],
+                            ['জঘন্য', 'পচা', 'মেহ!', 'অকে', 'সেরা'][i],
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 12,
