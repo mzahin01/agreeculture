@@ -56,7 +56,7 @@ class HomeView extends GetView<HomeController> {
               width: min(double.maxFinite, 600),
               child: BarButton(
                 height: 55,
-                title: 'Analyze Your Opinion',
+                title: 'আপনার মতামত বিশ্লেষণ করুন',
                 onPressed: () {
                   if (controller.checkAllVotes()) {
                     Get.toNamed(
