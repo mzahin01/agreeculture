@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../styles/colors.dart';
-import '../../../styles/spacing.dart';
-import '../../../styles/text_styles.dart';
+import '../../styles/colors.dart';
+import '../../styles/spacing.dart';
+import '../../styles/text_styles.dart';
 
 class BarButton extends StatelessWidget {
   const BarButton({
@@ -91,7 +91,7 @@ class BarButton extends StatelessWidget {
       title: title,
       onPressed: onPressed,
       textColor: SGColors.secondaryRed,
-      buttonColor: SGColors.secondaryRed.withAlpha(21),
+      buttonColor: SGColors.secondaryRed.withOpacity(0.1),
     );
   }
 
