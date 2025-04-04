@@ -39,7 +39,7 @@ class HomeView extends GetView<HomeController> {
           const SizedBox(height: 20),
           const Text('Reform Proposals'),
           const SizedBox(height: 20),
-          for (int i = 0; i < controller.questions.length; i++)
+          for (int i = 0; i < (controller.questions?.length ?? 0); i++)
             Column(
               children: [
                 SingleQuestionWidget(controller: controller, index: i),

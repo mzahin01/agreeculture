@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import '../controllers/home_controller.dart';
 
 class SingleQuestionWidget extends StatelessWidget {
@@ -34,7 +35,7 @@ class SingleQuestionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Question(ques: controller.questions[index].text),
+          Question(ques: controller.questions?[index].text ?? ''),
           const SizedBox(height: 20),
           Options(controller: controller, index: index),
           const SizedBox(height: 20),
@@ -134,56 +135,116 @@ class Options extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        for (int i = 0; i < 5; i++)
-          Container(
-            width:
-                (i == 0 || i == 4)
-                    ? 58.0
-                    : (i == 1 || i == 3)
-                    ? 50.0
-                    : 45.0,
-            height:
-                (i == 0 || i == 4)
-                    ? 58.0
-                    : (i == 1 || i == 3)
-                    ? 50.0
-                    : 45.0,
-            decoration: BoxDecoration(
-              color:
-                  [
-                    Colors.red,
-                    Colors.orange,
-                    Colors.grey,
-                    Colors.lightGreen,
-                    Colors.green,
-                  ][i],
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: MaterialButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(100),
-              ),
-              onPressed: () {
+    return Obx(() {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          for (int i = 0; i < 5; i++)
+            GestureDetector(
+              onTap: () {
                 controller.vote(index, i);
               },
-              child: Center(
-                child: Text(
-                  '${i + 1}',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+              child: SizedBox(
+                width:
+                    (i == 0 || i == 4)
+                        ? 58.0
+                        : (i == 1 || i == 3)
+                        ? 50.0
+                        : 45.0,
+                height:
+                    (i == 0 || i == 4)
+                        ? 58.0
+                        : (i == 1 || i == 3)
+                        ? 50.0
+                        : 45.0,
+                // color: Colors.black,
+                child: Stack(
+                  children: [
+                    Container(
+                      width:
+                          (i == 0 || i == 4)
+                              ? 58.0
+                              : (i == 1 || i == 3)
+                              ? 50.0
+                              : 45.0,
+                      height:
+                          (i == 0 || i == 4)
+                              ? 58.0
+                              : (i == 1 || i == 3)
+                              ? 50.0
+                              : 45.0,
+                      decoration: BoxDecoration(
+                        color:
+                            [
+                              Colors.red,
+                              Colors.orange,
+                              Colors.grey,
+                              Colors.lightGreen,
+                              Colors.green,
+                            ][i],
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        width:
+                            (i == 0 || i == 4)
+                                ? 48.0
+                                : (i == 1 || i == 3)
+                                ? 40.0
+                                : 35.0,
+                        height:
+                            (i == 0 || i == 4)
+                                ? 48.0
+                                : (i == 1 || i == 3)
+                                ? 40.0
+                                : 35.0,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Center(
+                          child: Text(
+                            ['সেরা', 'অকে', 'মেহ!', 'বাজে', 'জঘন্য'][i],
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (controller.questions?[index].answers == i)
+                      Container(
+                        width:
+                            (i == 0 || i == 4)
+                                ? 58.0
+                                : (i == 1 || i == 3)
+                                ? 50.0
+                                : 45.0,
+                        height:
+                            (i == 0 || i == 4)
+                                ? 58.0
+                                : (i == 1 || i == 3)
+                                ? 50.0
+                                : 45.0,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(color: Colors.red, width: 2),
+                        ),
+                      ),
+                    if (controller.toUpdate.value || !controller.toUpdate.value)
+                      SizedBox(),
+                  ],
                 ),
               ),
             ),
-          ),
-      ],
-    );
+        ],
+      );
+    });
   }
 }
 

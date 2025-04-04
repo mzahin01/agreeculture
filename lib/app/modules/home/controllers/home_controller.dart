@@ -4,14 +4,15 @@ import '../data/ques_strings.dart';
 
 class QuestionDetails {
   final String text;
-  final int answers;
+  int answers;
 
   QuestionDetails({required this.text, required this.answers});
 }
 
 class HomeController extends GetxController {
   RxBool isLoading = false.obs;
-  List<QuestionDetails> questions = [];
+  RxBool toUpdate = false.obs;
+  RxList<QuestionDetails>? questions = <QuestionDetails>[].obs;
   @override
   void onInit() {
     super.onInit();
@@ -23,7 +24,8 @@ class HomeController extends GetxController {
     questions =
         reformProposals
             .map((proposal) => QuestionDetails(text: proposal, answers: -1))
-            .toList();
+            .toList()
+            .obs;
   }
 
   // Answers List (default value -1 means no selection)
@@ -34,5 +36,12 @@ class HomeController extends GetxController {
     selectedAnswers[questionIndex] = value;
   }
 
-  void vote(int index, int i) {}
+  void vote(int index, int i) {
+    if (questions?[index].answers == i) {
+      questions?[index].answers = -1;
+    } else {
+      questions?[index].answers = i;
+    }
+    toUpdate.value = !toUpdate.value;
+  }
 }
