@@ -91,7 +91,7 @@ class BarButton extends StatelessWidget {
       title: title,
       onPressed: onPressed,
       textColor: SGColors.secondaryRed,
-      buttonColor: SGColors.secondaryRed.withOpacity(0.1),
+      buttonColor: SGColors.secondaryRed.withAlpha(20),
     );
   }
 
