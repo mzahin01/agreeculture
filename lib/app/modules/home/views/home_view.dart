@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:agreeculture/app/modules/home/widget/title.dart';
 import 'package:agreeculture/app/routes/app_pages.dart';
 import 'package:agreeculture/app/shared/widget/button/bar_button.dart';
@@ -50,15 +52,18 @@ class HomeView extends GetView<HomeController> {
           // SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: BarButton(
-              height: 55,
-              title: 'Analyze Your Opinion',
-              onPressed: () {
-                Get.toNamed(
-                  Routes.RESULT_SHOW,
-                  arguments: {'questions': controller.questions},
-                );
-              },
+            child: SizedBox(
+              width: min(double.maxFinite, 600),
+              child: BarButton(
+                height: 55,
+                title: 'Analyze Your Opinion',
+                onPressed: () {
+                  Get.toNamed(
+                    Routes.RESULT_SHOW,
+                    arguments: {'questions': controller.questions},
+                  );
+                },
+              ),
             ),
           ),
           const SizedBox(height: 20),
