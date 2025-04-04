@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../data/ques_strings.dart';
@@ -43,5 +44,22 @@ class HomeController extends GetxController {
       questions?[index].answers = i;
     }
     toUpdate.value = !toUpdate.value;
+  }
+
+  bool checkAllVotes() {
+    for (int i = 0; i < questions!.length; i++) {
+      if (questions![i].answers == -1) {
+        // Get.snackbar("Error", "Please select an answer for all questions");
+        // in bangla
+        Get.snackbar(
+          "ত্রুটি",
+          "অনুগ্রহ করে সকল প্রশ্নের জন্য একটি উত্তর নির্বাচন করুন",
+          colorText: Colors.white,
+          backgroundColor: Colors.red.withOpacity(0.5),
+        );
+        return false;
+      }
+    }
+    return true;
   }
 }

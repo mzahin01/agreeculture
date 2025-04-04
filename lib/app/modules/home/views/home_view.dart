@@ -58,10 +58,12 @@ class HomeView extends GetView<HomeController> {
                 height: 55,
                 title: 'Analyze Your Opinion',
                 onPressed: () {
-                  Get.toNamed(
-                    Routes.RESULT_SHOW,
-                    arguments: {'questions': controller.questions},
-                  );
+                  if (controller.checkAllVotes()) {
+                    Get.toNamed(
+                      Routes.RESULT_SHOW,
+                      arguments: {'questions': controller.questions},
+                    );
+                  }
                 },
               ),
             ),
