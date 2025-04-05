@@ -55,7 +55,7 @@ class HomeController extends GetxController {
           "ত্রুটি",
           "অনুগ্রহ করে সকল প্রশ্নের জন্য একটি উত্তর নির্বাচন করুন",
           colorText: Colors.white,
-          backgroundColor: Colors.red.withOpacity(0.7),
+          backgroundColor: Colors.red.withAlpha(200),
         );
         return false;
       }

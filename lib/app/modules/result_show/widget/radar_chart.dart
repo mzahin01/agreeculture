@@ -33,7 +33,7 @@ class RadarChartWidget extends StatelessWidget {
               isMinValueAtCenter: false,
               dataSets: [
                 RadarDataSet(
-                  fillColor: graphColor.withOpacity(0.2),
+                  fillColor: graphColor.withAlpha(2),
                   borderColor: graphColor,
                   borderWidth: 2,
                   entryRadius: 5,
