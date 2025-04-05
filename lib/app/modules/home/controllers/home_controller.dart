@@ -11,6 +11,7 @@ class QuestionDetails {
 }
 
 class HomeController extends GetxController {
+  RxBool answerKnown = true.obs;
   RxBool isLoading = false.obs;
   RxBool toUpdate = false.obs;
   RxList<QuestionDetails>? questions = <QuestionDetails>[].obs;
@@ -21,12 +22,24 @@ class HomeController extends GetxController {
   }
 
   void loadQuestions() {
+    questions?.clear();
     // Import the reformProposals list from ques_strings.dart
-    questions =
-        reformProposals
-            .map((proposal) => QuestionDetails(text: proposal, answers: -1))
-            .toList()
-            .obs;
+    if (answerKnown.value) {
+      questions =
+          questions =
+              allAnswerKnownForComp
+                  .map(
+                    (proposal) => QuestionDetails(text: proposal, answers: -1),
+                  )
+                  .toList()
+                  .obs;
+    } else {
+      questions =
+          allKnownQueses
+              .map((proposal) => QuestionDetails(text: proposal, answers: -1))
+              .toList()
+              .obs;
+    }
   }
 
   // Answers List (default value -1 means no selection)

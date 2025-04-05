@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:agreeculture/app/modules/home/widget/title.dart';
 import 'package:agreeculture/app/routes/app_pages.dart';
 import 'package:agreeculture/app/shared/widget/button/bar_button.dart';
@@ -8,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../shared/widget/animated/crossfade_wrapper_container.dart';
 import '../../../shared/widget/responseive_view/response_view.dart';
 import '../controllers/home_controller.dart';
+import '../widget/known_selector.dart';
 import '../widget/single_q.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -42,6 +42,36 @@ class HomeView extends GetView<HomeController> {
           const SizedBox(height: 20),
           TopTitleWidget(),
           DetailsWidget(),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            width: min(double.maxFinite, 600),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AnswerToggleButton(
+                  controller: controller,
+                  text: 'উত্তর জানা',
+                  isActive: controller.answerKnown.value,
+                  onPressed: () {
+                    controller.answerKnown.value = true;
+                    controller.loadQuestions();
+                  },
+                ),
+                const SizedBox(width: 10),
+                AnswerToggleButton(
+                  controller: controller,
+                  text: 'উত্তর অজানা',
+                  isActive: !controller.answerKnown.value,
+                  onPressed: () {
+                    controller.answerKnown.value = false;
+                    controller.loadQuestions();
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+
           for (int i = 0; i < (controller.questions?.length ?? 0); i++)
             Column(
               children: [
