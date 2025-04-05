@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../shared/widget/animated/crossfade_wrapper_container.dart';
@@ -46,7 +48,32 @@ class ResultShowView extends GetView<ResultShowController> {
             const SizedBox(height: 30),
             // Political party charts side by side
             OtherOpinions(controller: controller),
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
+            Container(
+              width: min(double.maxFinite, 600),
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: TextButton(
+                onPressed: () {
+                  // Navigate to the home page
+                  controller.shareInfo();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.share, color: Colors.white, size: 30),
+                    const SizedBox(width: 20),
+                    const Text(
+                      'Share Result',
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

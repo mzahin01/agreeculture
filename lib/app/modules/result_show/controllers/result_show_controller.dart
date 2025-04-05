@@ -44,4 +44,10 @@ class ResultShowController extends GetxController {
 
     return (matches / total).round();
   }
+
+  shareInfo() {
+    // Implement your share functionality here
+    // For example, you can use the Share package to share the result
+    // Share.share('Your result: $bestMatch with $bestMatchPercent% match');
+  }
 }

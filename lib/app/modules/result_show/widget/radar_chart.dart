@@ -33,7 +33,7 @@ class RadarChartWidget extends StatelessWidget {
               isMinValueAtCenter: false,
               dataSets: [
                 RadarDataSet(
-                  fillColor: graphColor.withAlpha(2),
+                  fillColor: graphColor.withAlpha(50),
                   borderColor: graphColor,
                   borderWidth: 2,
                   entryRadius: 5,
@@ -51,22 +51,22 @@ class RadarChartWidget extends StatelessWidget {
                   }),
                 ),
               ],
+              radarBackgroundColor: Colors.transparent,
               radarBorderData: const BorderSide(color: Colors.transparent),
               titlePositionPercentageOffset: 0.2,
-              titleTextStyle: const TextStyle(
-                fontSize: 14,
-                color: Colors.black87,
-              ),
+              titleTextStyle: const TextStyle(fontSize: 14, color: Colors.grey),
               getTitle:
                   (index, angle) => RadarChartTitle(text: 'Q${index + 1}'),
               tickCount: 4,
+              tickBorderData: const BorderSide(color: Colors.grey, width: 1),
               ticksTextStyle: const TextStyle(
-                color: Colors.black54,
+                color: Colors.transparent,
                 fontSize: 10,
               ),
-              gridBorderData: const BorderSide(color: Colors.black26, width: 1),
+              gridBorderData: const BorderSide(color: Colors.grey, width: 1),
               radarShape: RadarShape.polygon,
             ),
+            curve: Curves.easeOutSine,
           ),
         ),
       ],
