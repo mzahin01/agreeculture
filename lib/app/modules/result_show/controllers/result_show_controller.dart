@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:ui' as ui;
 
 class ResultShowController extends GetxController {
   int ncpMatches = 0;
@@ -9,6 +13,13 @@ class ResultShowController extends GetxController {
   RxString questions = ''.obs;
   String ncpResult = '44443444444';
   String bnpResult = '10000000001';
+  // Key to identify the widget to capture
+  final GlobalKey widgetKey = GlobalKey();
+  // State to track if capturing is in progress
+  bool isCapturing = false;
+  // State to store the captured image data
+  Uint8List? capturedImage;
+
   @override
   void onInit() {
     questions.value = Get.parameters['q'] ?? '';
@@ -45,9 +56,44 @@ class ResultShowController extends GetxController {
     return (matches / total).round();
   }
 
-  shareInfo() {
-    // Implement your share functionality here
-    // For example, you can use the Share package to share the result
-    // Share.share('Your result: $bestMatch with $bestMatchPercent% match');
+  Future<void> shareInfo() async {
+    // Set state to show loading indicator
+    isCapturing = true;
+
+    try {
+      // Find the RenderObject using the GlobalKey
+      RenderRepaintBoundary boundary =
+          widgetKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+
+      // Capture the widget's rendering as an image
+      // pixelRatio increases resolution (e.g., 3.0 for higher quality)
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+
+      // Convert the ui.Image to byte data in PNG format
+      ByteData? byteData = await image.toByteData(
+        format: ui.ImageByteFormat.png,
+      );
+
+      if (byteData != null) {
+        // Convert ByteData to Uint8List
+        final bytes = byteData.buffer.asUint8List();
+
+        // Update state with the captured image bytes
+        capturedImage = bytes;
+
+        debugPrint('Image captured successfully! ${bytes.length} bytes');
+      } else {
+        debugPrint('Error: Could not get byte data from image.');
+        capturedImage = null;
+      }
+    } catch (e) {
+      debugPrint('Error capturing image: $e');
+      capturedImage = null;
+    } finally {
+      // Ensure the loading state is turned off
+      isCapturing = false;
+    }
   }
+
+  // --- End of Method to Capture Image ---
 }
