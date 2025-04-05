@@ -6,12 +6,11 @@ import 'package:flutter/rendering.dart';
 import 'dart:ui' as ui;
 import 'dart:io'; // For File (non-web)
 import 'package:flutter/foundation.dart' show kIsWeb; // To check platform
-import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart'; // For sharing and XFile
 // ignore: deprecated_member_use, avoid_web_libraries_in_flutter
 import 'dart:html' as html; // For Blob (web)
 import 'package:path_provider/path_provider.dart'; // For temp directory (non-web)
-import 'dart:typed_data'; // For Uint8List
+// For Uint8List
 
 class ResultShowController extends GetxController {
   int ncpMatches = 0;
@@ -98,7 +97,6 @@ class ResultShowController extends GetxController {
         capturedImage = bytes;
 
         debugPrint('Image captured successfully! ${bytes.length} bytes');
-        await shareImage();
       } else {
         debugPrint('Error: Could not get byte data from image.');
         capturedImage = null;
@@ -113,86 +111,54 @@ class ResultShowController extends GetxController {
   }
 
   Future<void> shareImage() async {
-    // Check if an image has been captured
     if (capturedImage == null) {
       debugPrint('No image to share');
-      // Optional: Show a snackbar or message to the user
-      Get.snackbar(
-        'No Image Captured',
-        'Please capture an image first!',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent,
-        colorText: Colors.white,
-      );
       return;
     }
 
     try {
-      // Create an XFile from the image bytes
-      // This is used by share_plus regardless of platform
-      final xFile = XFile.fromData(
-        capturedImage!,
-        name: 'parameters.png', // Suggested filename
-        mimeType: 'image/png', // Set the correct MIME type
-      );
-
-      // Platform specific sharing logic
+      // For web platform specifically
       if (kIsWeb) {
-        // Web platform: Use share_plus directly with XFile
-        // Note: Web Share API support varies across browsers.
+        try {
+          // Create a temp file for sharing
+          final xFile = XFile.fromData(
+            capturedImage!,
+            name: 'parameters.png',
+            mimeType: 'image/png',
+          );
 
-        // The Blob/Url creation was in the original code, but shareXFiles
-        // can often handle the Uint8List directly via XFile.fromData
-        // If direct sharing fails, the Blob method might be a fallback,
-        // but usually isn't needed with modern share_plus.
+          // Try using Web Share API
+          final shareResult = await Share.shareXFiles(
+            [xFile],
+            text: 'Check out these parameters I captured!',
+            subject: 'Shared Parameters',
+          );
 
-        final shareResult = await Share.shareXFiles(
-          [xFile],
-          text: 'Check out these parameters I captured!',
-          subject: 'Shared Parameters', // Subject often used in email sharing
-        );
-
-        debugPrint('Web Share result: ${shareResult.status}');
-
-        // Check if sharing was potentially dismissed or unavailable
-        if (shareResult.status == ShareResultStatus.dismissed) {
-          debugPrint('Share dialog was dismissed.');
-        } else if (shareResult.status == ShareResultStatus.unavailable) {
-          debugPrint('Sharing is unavailable. Falling back to download.');
-          downloadImage(); // Fallback if Web Share API isn't supported/successful
+          debugPrint('Share result: ${shareResult.status}');
+        } catch (webError) {
+          debugPrint('Web Share API unavailable: $webError');
+          debugPrint('Falling back to download method');
+          downloadImage(); // Call your existing download method as fallback
         }
       } else {
-        // Non-web platforms (Mobile, Desktop)
-        // Save to a temporary file first, as shareXFiles needs a path
+        // For non-web platforms (if you need this in the future)
         final tempDir = await getTemporaryDirectory();
         final file = File('${tempDir.path}/parameters.png');
         await file.writeAsBytes(capturedImage!);
 
-        // Share the temporary file using its path
-        final shareResult = await Share.shareXFiles(
-          [XFile(file.path)], // Pass the file path inside XFile
+        await Share.shareXFiles(
+          [XFile(file.path)],
           text: 'Check out these parameters I captured!',
           subject: 'Shared Parameters',
         );
-        debugPrint('Non-Web Share result: ${shareResult.status}');
-        // Optionally delete the temp file after sharing attempt
-        // await file.delete();
       }
     } catch (e) {
       debugPrint('Error sharing image: $e');
-      // Fallback specifically for Web if the primary share method failed
+
+      // Fallback for browsers that don't support Web Share API
       if (kIsWeb) {
         debugPrint('Sharing failed, attempting fallback download.');
-        downloadImage(); // Fallback to download on error for web
-      } else {
-        // Handle non-web errors (e.g., show a message)
-        Get.snackbar(
-          'Error Sharing Image',
-          'Could not share image. Error: $e',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.redAccent,
-          colorText: Colors.white,
-        );
+        downloadImage();
       }
     }
   }

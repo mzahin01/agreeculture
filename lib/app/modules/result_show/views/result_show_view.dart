@@ -49,6 +49,14 @@ class ResultShowView extends GetView<ResultShowController> {
               OtherOpinions(controller: controller),
               const SizedBox(height: 50),
               ShareButtonWidget(controller: controller),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  controller.shareImage();
+                  ();
+                },
+                child: const Text('Share Image'),
+              ),
             ],
           ),
         ),
