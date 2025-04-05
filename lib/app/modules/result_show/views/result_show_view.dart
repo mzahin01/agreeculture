@@ -13,6 +13,7 @@ class ResultShowView extends GetView<ResultShowController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('ফলাফল বিশ্লেষণ'), centerTitle: true),
       body: Obx(() {
         return SingleChildScrollView(
